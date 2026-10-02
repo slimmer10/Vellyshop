@@ -6,6 +6,7 @@ import { AddToCart } from "@/components/AddToCart";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { formatNaira } from "@/lib/money";
+import { categorySlug } from "@/lib/categories";
 import type { Product } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -35,7 +36,7 @@ export default async function ProductPage({
   const related = (relatedRows ?? []) as Product[];
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+    <div className="shell py-6 sm:py-10">
       <nav aria-label="Breadcrumb" className="text-[13px] text-muted">
         <ol className="flex flex-wrap items-center gap-1.5">
           <li>
@@ -46,7 +47,7 @@ export default async function ProductPage({
           <li aria-hidden="true">/</li>
           <li>
             <Link
-              href={`/?category=${encodeURIComponent(product.category)}#catalogue`}
+              href={`/collections/${categorySlug(product.category)}`}
               className="transition-colors hover:text-clay"
             >
               {product.category}

@@ -228,6 +228,47 @@ body {
 }
 
 /* Keeps the reveal classes from hiding content when JavaScript is off. */
+/* ------------------------------------------------------------------ shell
+ *
+ * The page container. Wide on a desktop monitor, because a shop capped at
+ * 1150px on a 1900px screen reads like a phone layout that got stretched.
+ */
+.shell {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 1480px;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .shell { padding-inline: 2rem; }
+}
+
+@media (min-width: 1024px) {
+  .shell { padding-inline: 3rem; }
+}
+
+/* A narrower shell for pages that are mostly reading, not browsing. */
+.shell-narrow {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 980px;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .shell-narrow { padding-inline: 2rem; }
+}
+
+/* The navigation item for the collection you are actually looking at. */
+.nav-link.is-active {
+  color: var(--ink);
+}
+
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-pan {
     animation: none !important;

@@ -2,15 +2,16 @@ import Link from "next/link";
 
 const SHOP = [
   ["All pieces", "/"],
-  ["Outerwear", "/?category=Outerwear"],
-  ["Dresses", "/?category=Dresses"],
-  ["Knitwear", "/?category=Knitwear"],
-  ["Tops", "/?category=Tops"],
+  ["Outerwear", "/collections/outerwear"],
+  ["Dresses", "/collections/dresses"],
+  ["Knitwear", "/collections/knitwear"],
+  ["Tops", "/collections/tops"],
 ];
 
 const ACCOUNT = [
   ["Log in", "/login"],
   ["Create account", "/login?mode=create"],
+  ["Your account", "/account"],
   ["Order history", "/orders"],
   ["Your cart", "/cart"],
 ];
@@ -18,7 +19,7 @@ const ACCOUNT = [
 export function Footer() {
   return (
     <footer className="mt-20 border-t border-line bg-paper-raised">
-      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <div className="shell py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex items-baseline gap-1.5">

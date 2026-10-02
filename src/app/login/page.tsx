@@ -9,7 +9,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const { next, error, mode } = await searchParams;
   const creating = mode === "create";
   const destination =
-    typeof next === "string" && next.startsWith("/") ? next : "/orders";
+    typeof next === "string" && next.startsWith("/") ? next : "/account";
 
   const supabase = await createClient();
   const {

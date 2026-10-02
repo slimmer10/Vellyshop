@@ -3,13 +3,15 @@ import { createClient } from "@/lib/supabase/server";
 import { CartBadge } from "@/components/CartBadge";
 import { AccountMenu } from "@/components/AccountMenu";
 import { StickyHeader } from "@/components/StickyHeader";
+import { NavLinks, type NavItem } from "@/components/NavLinks";
 
-const NAV = [
+const NAV: NavItem[] = [
   { label: "Shop all", href: "/" },
-  { label: "Outerwear", href: "/?category=Outerwear" },
-  { label: "Dresses", href: "/?category=Dresses" },
-  { label: "Knitwear", href: "/?category=Knitwear" },
-  { label: "Tops", href: "/?category=Tops" },
+  { label: "Outerwear", href: "/collections/outerwear" },
+  { label: "Dresses", href: "/collections/dresses" },
+  { label: "Knitwear", href: "/collections/knitwear" },
+  { label: "Tops", href: "/collections/tops" },
+  { label: "Bottoms", href: "/collections/bottoms" },
 ];
 
 export async function Header() {
@@ -25,33 +27,23 @@ export async function Header() {
   return (
     <>
       <div className="bg-ink text-paper">
-        <p className="mx-auto max-w-6xl px-4 py-2 text-center text-[12px] tracking-wide sm:px-6">
+        <p className="shell py-2 text-center text-[12px] tracking-wide">
           Free delivery on orders over ₦50,000 · Nationwide, 2–5 working days
         </p>
       </div>
 
       <StickyHeader>
-        <div className="mx-auto flex h-[60px] max-w-6xl items-center justify-between gap-6 px-4 sm:px-6">
+        <div className="shell flex h-[64px] items-center justify-between gap-8">
           <Link href="/" className="group flex shrink-0 items-baseline gap-1.5">
-            <span className="display text-xl tracking-tight text-ink transition-colors group-hover:text-clay">
+            <span className="display text-[22px] tracking-tight text-ink transition-colors group-hover:text-clay">
               Vellyshop
             </span>
             <span className="h-[5px] w-[5px] rounded-full bg-clay transition-transform duration-500 group-hover:scale-150" />
           </Link>
 
-          <nav className="hidden items-center gap-7 lg:flex">
-            {NAV.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="nav-link text-[13px] uppercase tracking-[0.1em] text-ink-soft transition-colors hover:text-clay"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <NavLinks items={NAV} />
 
-          <div className="flex shrink-0 items-center gap-3 sm:gap-4">
+          <div className="flex shrink-0 items-center gap-3 sm:gap-5">
             {user ? (
               <AccountMenu
                 email={user.email ?? ""}
@@ -77,17 +69,7 @@ export async function Header() {
           </div>
         </div>
 
-        <nav className="flex items-center gap-5 overflow-x-auto border-t border-line/70 px-4 py-2.5 lg:hidden">
-          {NAV.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="shrink-0 text-[12px] uppercase tracking-[0.1em] text-muted transition-colors hover:text-clay"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <NavLinks items={NAV} variant="rail" />
       </StickyHeader>
     </>
   );

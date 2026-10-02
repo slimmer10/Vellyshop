@@ -13,7 +13,7 @@ export default function CartPage() {
 
   if (!ready) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-20 text-sm text-muted sm:px-6">
+      <div className="shell py-20 text-sm text-muted">
         Loading your cart…
       </div>
     );
@@ -21,7 +21,7 @@ export default function CartPage() {
 
   if (lines.length === 0) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-24 text-center sm:px-6">
+      <div className="shell py-24 text-center">
         <h1 className="display text-3xl text-ink">Your cart is empty</h1>
         <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-muted">
           Nothing on the hanger yet. The rail is through here.
@@ -37,7 +37,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <div className="shell py-12">
       <h1 className="display text-3xl text-ink">Your cart</h1>
 
       <div className="mt-10 grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:gap-16">

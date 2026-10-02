@@ -76,7 +76,7 @@ export default async function OrdersPage({
   const spent = orders.reduce((sum, o) => sum + o.total_kobo, 0);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
+    <div className="shell-narrow py-10 sm:py-14">
       {justPlaced && (
         <Reveal className="mb-10">
           <div className="rounded-sm border border-line bg-paper-raised p-6 sm:p-7">

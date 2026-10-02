@@ -70,7 +70,7 @@ export function CheckoutForm({
 
   if (!ready) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-20 text-sm text-muted sm:px-6">
+      <div className="shell py-20 text-sm text-muted">
         Loading your cart...
       </div>
     );
@@ -78,7 +78,7 @@ export function CheckoutForm({
 
   if (lines.length === 0) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-24 text-center sm:px-6">
+      <div className="shell py-24 text-center">
         <h1 className="display text-3xl text-ink">Nothing to check out</h1>
         <p className="mt-3 text-sm text-muted">Your cart is empty.</p>
         <Link
@@ -92,7 +92,7 @@ export function CheckoutForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <form onSubmit={onSubmit} className="shell py-12">
       <h1 className="display text-3xl text-ink">Checkout</h1>
       <p className="mt-2 text-sm text-muted">
         Where should this go, and who do we call when it arrives?
