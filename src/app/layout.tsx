@@ -32,6 +32,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${display.variable} ${body.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        {/* Without JavaScript the reveal classes would leave content at zero
+            opacity forever, so turn them off entirely. */}
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         <CartProvider>
           <Header />
           <main className="flex-1">{children}</main>

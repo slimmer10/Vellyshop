@@ -16,17 +16,25 @@ export default async function CheckoutPage() {
     return (
       <div className="mx-auto max-w-md px-4 py-20 sm:px-6">
         <div className="eyebrow text-clay">Checkout</div>
-        <h1 className="display mt-4 text-3xl text-ink">Sign in to check out</h1>
+        <h1 className="display mt-4 text-3xl text-ink">Log in to check out</h1>
         <p className="mt-3 text-sm leading-relaxed text-ink-soft">
           Your cart is safe where it is. Sign in and you will come straight back
           here, with everything still in it.
         </p>
-        <Link
-          href="/login?next=%2Fcheckout"
-          className="mt-8 inline-block rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper transition-colors hover:bg-clay"
-        >
-          Sign in with Google
-        </Link>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Link
+            href="/login?next=%2Fcheckout"
+            className="press rounded-full bg-ink px-6 py-3 text-center text-sm font-medium text-paper hover:bg-clay"
+          >
+            Log in
+          </Link>
+          <Link
+            href="/login?mode=create&next=%2Fcheckout"
+            className="press rounded-full border border-line px-6 py-3 text-center text-sm font-medium text-ink hover:border-ink"
+          >
+            Create an account
+          </Link>
+        </div>
       </div>
     );
   }

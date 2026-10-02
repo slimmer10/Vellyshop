@@ -3,7 +3,13 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-export function GoogleSignInButton({ next }: { next: string }) {
+export function GoogleSignInButton({
+  next,
+  label = "Continue with Google",
+}: {
+  next: string;
+  label?: string;
+}) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,7 +41,7 @@ export function GoogleSignInButton({ next }: { next: string }) {
         type="button"
         onClick={signIn}
         disabled={busy}
-        className="flex w-full items-center justify-center gap-3 rounded-full border border-line bg-paper-raised px-6 py-3.5 text-sm font-medium text-ink transition-colors hover:border-ink disabled:opacity-60"
+        className="press flex w-full items-center justify-center gap-3 rounded-full border border-line bg-paper-raised px-6 py-3.5 text-sm font-medium text-ink hover:border-ink disabled:opacity-60"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
           <path
@@ -55,7 +61,7 @@ export function GoogleSignInButton({ next }: { next: string }) {
             d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.18 15.23 0 12 0A12 12 0 0 0 1.26 6.63l4.01 3.1C6.22 6.86 8.87 4.75 12 4.75Z"
           />
         </svg>
-        {busy ? "Opening Google…" : "Continue with Google"}
+        {busy ? "Opening Google…" : label}
       </button>
       {error && <p className="mt-3 text-sm text-clay">{error}</p>}
     </>

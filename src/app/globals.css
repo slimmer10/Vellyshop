@@ -58,11 +58,203 @@ body {
     linear-gradient(170deg, #f6efe6 0%, var(--paper) 72%);
 }
 
+/* ------------------------------------------------------------------ motion
+ *
+ * One easing curve and one distance across the whole site, so everything
+ * moves like it belongs to the same object. The curve is a soft expo-out:
+ * quick to start, long tail, no bounce.
+ */
+
+:root {
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --rise-distance: 18px;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--rise-distance), 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+
+@keyframes draw-in {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Entrance for things already on screen at load. Stagger with --delay. */
+.rise {
+  opacity: 0;
+  animation: rise 0.75s var(--ease-out-soft) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Entrance for things further down the page. Reveal.tsx adds .is-visible
+ * when the element scrolls into view; until then it waits, hidden. */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--rise-distance), 0);
+  transition:
+    opacity 0.7s var(--ease-out-soft),
+    transform 0.7s var(--ease-out-soft);
+  transition-delay: var(--delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* The header thickens slightly once the page has moved under it. */
+.header-bar {
+  transition:
+    background-color 0.35s var(--ease-out-soft),
+    border-color 0.35s var(--ease-out-soft),
+    box-shadow 0.35s var(--ease-out-soft);
+  border-color: transparent;
+}
+
+.header-bar.is-scrolled {
+  border-color: var(--line);
+  box-shadow: 0 1px 24px -12px rgba(31, 26, 22, 0.35);
+}
+
+/* A hairline that draws itself in under a nav link on hover. */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out-soft);
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Buttons that acknowledge the press. */
+.press {
+  transition:
+    transform 0.25s var(--ease-out-soft),
+    background-color 0.3s var(--ease-out-soft),
+    box-shadow 0.3s var(--ease-out-soft);
+}
+
+.press:hover {
+  transform: translateY(-1px);
+}
+
+.press:active {
+  transform: translateY(0) scale(0.985);
+  transition-duration: 0.08s;
+}
+
+/* The cart count, when it changes. */
+.pop {
+  animation: pop 0.45s var(--ease-out-soft);
+}
+
+/* A card's photograph settles back as the cursor leaves. */
+.card-media {
+  transition: transform 0.9s var(--ease-out-soft);
+}
+
+.group:hover .card-media {
+  transform: scale(1.05);
+}
+
+/* The caption lifts a little to meet it. */
+.card-caption {
+  transition: transform 0.5s var(--ease-out-soft);
+}
+
+.group:hover .card-caption {
+  transform: translateY(-2px);
+}
+
+/* Someone who asked for less movement gets none of it, and still sees
+ * everything: the reveal classes must not leave content stuck at zero. */
+@keyframes hero-pan {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1); }
+}
+
+@keyframes menu-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* A very slow settle on the hero photograph, so the page is never quite
+ * static when it loads but nothing actually demands attention. */
+.hero-pan {
+  animation: hero-pan 14s var(--ease-out-soft) forwards;
+}
+
+.menu-pop {
+  animation: menu-pop 0.22s var(--ease-out-soft);
+  transform-origin: top right;
+}
+
+/* Keeps the reveal classes from hiding content when JavaScript is off. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-pan {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .rise,
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .press:hover,
+  .group:hover .card-media,
+  .group:hover .card-caption {
+    transform: none !important;
   }
 }

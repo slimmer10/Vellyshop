@@ -99,7 +99,7 @@ export function AddToCart({ product }: { product: Product }) {
         <button
           type="button"
           onClick={handleAdd}
-          className="flex-1 rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper transition-colors hover:bg-clay sm:flex-none sm:px-10"
+          className="press flex-1 rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper hover:bg-clay sm:flex-none sm:px-10"
         >
           Add to cart
         </button>
@@ -108,7 +108,7 @@ export function AddToCart({ product }: { product: Product }) {
       {error && <p className="mt-3 text-sm text-clay">{error}</p>}
 
       {added && (
-        <p className="mt-4 rounded-sm border border-line bg-paper-raised px-4 py-3 text-sm text-ink-soft">
+        <p className="rise mt-4 rounded-sm border border-line bg-paper-raised px-4 py-3 text-sm text-ink-soft">
           Added to your cart.{" "}
           <Link href="/cart" className="font-medium text-clay underline underline-offset-4">
             Go to cart
