@@ -42,3 +42,6 @@ next-env.d.ts
 
 # keep the template, ignore the real secrets
 !.env.example
+
+# Local Netlify folder
+.netlify

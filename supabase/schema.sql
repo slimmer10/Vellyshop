@@ -131,3 +131,84 @@ $$;
 
 revoke all on function public.mark_order_emailed(uuid) from public;
 grant execute on function public.mark_order_emailed(uuid) to authenticated;
+
+-- ---------------------------------------------------------------- cart items
+--
+-- A signed-in user's cart lives here so the website and the mobile app see the
+-- same one. Guests still use localStorage on the web until they sign in.
+-- "size" is '' (not null) for pieces without a size so the unique key works.
+
+create table if not exists public.cart_items (
+  user_id    uuid not null references auth.users (id) on delete cascade,
+  product_id uuid not null references public.products (id) on delete cascade,
+  size       text not null default '',
+  quantity   integer not null check (quantity between 1 and 20),
+  updated_at timestamptz not null default now(),
+  primary key (user_id, product_id, size)
+);
+
+alter table public.cart_items enable row level security;
+
+drop policy if exists "a user reads their own cart" on public.cart_items;
+create policy "a user reads their own cart"
+  on public.cart_items for select
+  to authenticated
+  using (auth.uid() = user_id);
+
+drop policy if exists "a user adds to their own cart" on public.cart_items;
+create policy "a user adds to their own cart"
+  on public.cart_items for insert
+  to authenticated
+  with check (auth.uid() = user_id);
+
+drop policy if exists "a user edits their own cart" on public.cart_items;
+create policy "a user edits their own cart"
+  on public.cart_items for update
+  to authenticated
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+drop policy if exists "a user empties their own cart" on public.cart_items;
+create policy "a user empties their own cart"
+  on public.cart_items for delete
+  to authenticated
+  using (auth.uid() = user_id);
+
+-- Replaces the caller's whole cart in one transaction, so a device never sees
+-- a half-written cart. p_lines is [{ "product_id": uuid, "size": text|null,
+-- "quantity": int }, ...]. Last writer wins, which is fine for a shopping cart.
+create or replace function public.replace_cart(p_lines jsonb)
+returns void
+language plpgsql
+security invoker
+set search_path = public
+as $$
+begin
+  delete from public.cart_items where user_id = auth.uid();
+
+  insert into public.cart_items (user_id, product_id, size, quantity)
+  select auth.uid(),
+         (l->>'product_id')::uuid,
+         coalesce(l->>'size', ''),
+         least(greatest((l->>'quantity')::int, 1), 20)
+    from jsonb_array_elements(coalesce(p_lines, '[]'::jsonb)) as l
+  on conflict (user_id, product_id, size)
+  do update set quantity = least(public.cart_items.quantity + excluded.quantity, 20);
+end;
+$$;
+
+revoke all on function public.replace_cart(jsonb) from public;
+grant execute on function public.replace_cart(jsonb) to authenticated;
+
+-- Live updates: lets a device hear about cart changes made on another device.
+-- (Also switch Realtime on for the table under Database -> Replication if this
+-- line reports the publication does not exist.)
+do $$
+begin
+  alter publication supabase_realtime add table public.cart_items;
+exception
+  when duplicate_object then null;
+  when undefined_object then null;
+end $$;
+
+alter table public.cart_items replica identity full;

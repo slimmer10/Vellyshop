@@ -150,6 +150,56 @@ Worth walking through before handing it in:
 
 ---
 
+## Mobile app
+
+`mobile/` is an Expo (React Native) counterpart to the shop. It talks to the
+same Supabase project, signs in with the same Google accounts, and calls the
+deployed site's `/api/checkout` to place orders, so the web and the phone share
+products, accounts, carts and orders.
+
+**Cart sync.** A signed-in user's cart lives in the `cart_items` table (see
+`supabase/schema.sql`). Both clients write it through the `replace_cart`
+function and listen for changes over Supabase Realtime, so adding something on
+the website shows up on the phone within a second or two, and the reverse.
+Guests keep a local cart that is merged into the account when they sign in.
+
+**One-off setup**
+
+1. Re-run `supabase/schema.sql` in the SQL Editor (adds `cart_items`).
+2. In Supabase -> Authentication -> URL Configuration -> Redirect URLs add
+   `vellyshop://auth/callback`.
+3. Deploy the web app so `/api/checkout` exists on Netlify.
+4. `cd mobile && cp .env.example .env` and fill in the same Supabase URL and
+   anon key as the web app.
+
+**Run it**
+
+```bash
+cd mobile
+npm install
+npx expo start            # development; needs a development build, see below
+```
+
+**Installable Android app (APK with the Vellyshop icon)**
+
+```bash
+cd mobile
+npx eas-cli@latest login
+npx eas-cli@latest init
+npx eas-cli@latest build -p android --profile preview
+```
+
+When the build finishes EAS prints a link and a QR code. Open it on the phone,
+download the APK and install it (allow installs from the browser if asked). The
+app then sits in the app drawer as **Vellyshop**.
+
+The Supabase URL and anon key are read from `mobile/.env` locally. For the cloud
+build run `npx eas-cli@latest env:create --environment preview` once for
+`EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` (plain text
+visibility is fine; the anon key is designed to be public).
+
+---
+
 ## Notes on how it is built
 
 **Sessions survive a closed browser.** The Supabase session is stored in an

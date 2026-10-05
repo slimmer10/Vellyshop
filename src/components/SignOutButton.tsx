@@ -8,7 +8,7 @@ import { useCart } from "@/lib/cart";
  * server, and empties the cart so the next person on this device starts fresh.
  */
 export function SignOutButton({ className }: { className?: string }) {
-  const { clear } = useCart();
+  const { clearLocal } = useCart();
   const [busy, setBusy] = useState(false);
 
   return (
@@ -17,7 +17,7 @@ export function SignOutButton({ className }: { className?: string }) {
       method="post"
       onSubmit={() => {
         setBusy(true);
-        clear();
+        clearLocal();
       }}
       className="contents"
     >

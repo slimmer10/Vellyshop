@@ -17,7 +17,7 @@ export function AccountMenu({
   name: string | null;
 }) {
   const [open, setOpen] = useState(false);
-  const { clear } = useCart();
+  const { clearLocal } = useCart();
   const wrapper = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export function AccountMenu({
           <form
             action="/auth/signout"
             method="post"
-            onSubmit={() => clear()}
+            onSubmit={() => clearLocal()}
             className="border-t border-line"
           >
             <button

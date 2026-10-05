@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "Vellyshop",
+    "slug": "vellyshop",
+    "scheme": "vellyshop",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#faf7f3",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.vellyshop.app"
+    },
+    "android": {
+      "package": "com.vellyshop.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#9c3d2e",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-web-browser",
+      "expo-image",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "backgroundColor": "#faf7f3"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
